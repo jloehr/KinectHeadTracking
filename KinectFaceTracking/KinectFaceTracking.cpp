@@ -9,9 +9,9 @@ KinectFaceTracking::KinectFaceTracking(_In_ HINSTANCE Instance)
 {
 }
 
-int KinectFaceTracking::Run(_In_ int nCmdShow)
+int KinectFaceTracking::Run(_In_ int CmdShow)
 {
-	Initialize(nCmdShow);
+	Initialize(CmdShow);
 
 	// Loop
 	MSG Message = {};
@@ -32,7 +32,7 @@ int KinectFaceTracking::Run(_In_ int nCmdShow)
 	return static_cast<int>(Message.wParam);
 }
 
-void KinectFaceTracking::Initialize(_In_ int nCmdShow)
+void KinectFaceTracking::Initialize(_In_ int CmdShow)
 {
 }
 

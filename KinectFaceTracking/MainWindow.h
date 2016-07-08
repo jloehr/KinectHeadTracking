@@ -19,4 +19,3 @@ private:
 	bool RegisterWindowClass(_In_ HINSTANCE Instance);
 
 };
-

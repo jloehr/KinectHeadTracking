@@ -13,6 +13,6 @@ public:
 private:
 	HINSTANCE Instance;
 
-	void Initialize(_In_ int nCmdShow);
+	void Initialize(_In_ int CmdShow);
 	void Destroy();
 };
