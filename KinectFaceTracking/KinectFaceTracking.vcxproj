@@ -161,13 +161,6 @@
     </ClCompile>
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="KinectFaceTracking.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="KinectFaceTracking.ico" />
-    <Image Include="small.ico" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
