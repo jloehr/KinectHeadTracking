@@ -34,6 +34,10 @@ int KinectFaceTracking::Run(_In_ int CmdShow)
 
 void KinectFaceTracking::Initialize(_In_ int CmdShow)
 {
+	if (Window.Create(Instance))
+	{
+		Window.Show(CmdShow);
+	}
 }
 
 void KinectFaceTracking::Destroy()

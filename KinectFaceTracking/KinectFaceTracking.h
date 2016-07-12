@@ -1,7 +1,6 @@
 #pragma once
 
-#include "resource.h"
-
+#include "MainWindow.h"
 
 class KinectFaceTracking
 {
@@ -12,6 +11,8 @@ public:
 
 private:
 	HINSTANCE Instance;
+
+	MainWindow Window;
 
 	void Initialize(_In_ int CmdShow);
 	void Destroy();
