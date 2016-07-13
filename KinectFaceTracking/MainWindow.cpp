@@ -37,8 +37,16 @@ const std::wstring & MainWindow::RegisterWindowClass(_In_ HINSTANCE Instance)
 
 LRESULT MainWindow::WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
+	MainWindow * Window = reinterpret_cast<MainWindow*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
+
 	switch (uMsg)
 	{
+		case WM_CREATE:
+		{
+			LPCREATESTRUCT CreateStruct = reinterpret_cast<LPCREATESTRUCT>(lParam);
+			SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(CreateStruct->lpCreateParams));
+		}
+		break;
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;

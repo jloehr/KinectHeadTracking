@@ -29,7 +29,7 @@ void Window::Create(_In_ HINSTANCE Instance)
 		nullptr,
 		nullptr,
 		Instance,
-		nullptr
+		this
 	);
 
 	if (WindowHandle == nullptr)
