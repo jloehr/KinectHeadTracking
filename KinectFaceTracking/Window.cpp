@@ -10,12 +10,12 @@ Window::Window()
 {
 }
 
-bool Window::Create(_In_ HINSTANCE Instance)
+void Window::Create(_In_ HINSTANCE Instance)
 {
 	const std::wstring & WindowClassName = RegisterWindowClass(Instance);
 	if (WindowClassName.empty())
 	{
-		return false;
+		Utility::Throw(L"Window Class Name is empty!");
 	}
 
 	WindowHandle = CreateWindow(
@@ -32,7 +32,10 @@ bool Window::Create(_In_ HINSTANCE Instance)
 		nullptr
 	);
 
-	return WindowHandle != nullptr;
+	if (WindowHandle == nullptr)
+	{
+		Utility::Throw(L"Failed to create Window!");
+	}
 }
 
 void Window::Show(int CmdShow)

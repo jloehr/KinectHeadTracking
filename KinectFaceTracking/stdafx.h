@@ -11,4 +11,5 @@
 #include <windows.h>
 
 #include <string>
-#include <functional>
+
+#include "Utility.h"

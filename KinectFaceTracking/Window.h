@@ -5,7 +5,7 @@ class Window
 public:
 	Window();
 
-	bool Create(_In_ HINSTANCE Instance);
+	void Create(_In_ HINSTANCE Instance);
 	void Show(_In_ int CmdShow);
 
 	const HWND & GetHandle() const;

@@ -25,6 +25,11 @@ const std::wstring & MainWindow::RegisterWindowClass(_In_ HINSTANCE Instance)
 		WindowClass.lpszClassName = MainWindow::WindowClassName.c_str();
 
 		WindowClassRegistered = (RegisterClassEx(&WindowClass) != 0);
+
+		if (!WindowClassRegistered)
+		{
+			Utility::Throw(L"Failed to Register Main Window Class");
+		}
 	}
 
 	return MainWindow::WindowClassName;
