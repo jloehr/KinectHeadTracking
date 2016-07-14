@@ -7,7 +7,8 @@
 const std::wstring MainWindow::WindowClassName = L"Main Windows";
 bool MainWindow::WindowClassRegistered = false;
 
-MainWindow::MainWindow()
+MainWindow::MainWindow(_In_ Renderer & WindowRenderer)
+	:Window(WindowRenderer)
 {
 }
 
@@ -41,7 +42,7 @@ LRESULT MainWindow::WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 
 	switch (uMsg)
 	{
-		case WM_CREATE:
+	case WM_CREATE:
 		{
 			LPCREATESTRUCT CreateStruct = reinterpret_cast<LPCREATESTRUCT>(lParam);
 			SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(CreateStruct->lpCreateParams));

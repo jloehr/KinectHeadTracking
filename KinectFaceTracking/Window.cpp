@@ -4,9 +4,10 @@
 #include "stdafx.h"
 #include "Window.h"
 
+#include "Renderer.h"
 
-Window::Window()
-	:WindowHandle(nullptr)
+Window::Window(_In_ Renderer & WindowRenderer)
+	:WindowHandle(nullptr), WindowRenderer(WindowRenderer)
 {
 }
 
@@ -36,6 +37,8 @@ void Window::Create(_In_ HINSTANCE Instance)
 	{
 		Utility::Throw(L"Failed to create Window!");
 	}
+
+	UpdateWindowSize();
 }
 
 void Window::Show(int CmdShow)
@@ -46,5 +49,19 @@ void Window::Show(int CmdShow)
 const HWND & Window::GetHandle() const
 {
 	return WindowHandle;
+}
+
+const Window::WindowSize & Window::GetWindowSize() const
+{
+	return Size;
+}
+
+void Window::UpdateWindowSize()
+{
+	RECT Rect = {};
+	GetClientRect(WindowHandle, &Rect);
+
+	Size.first = Rect.right - Rect.left;
+	Size.second = Rect.bottom - Rect.top;
 }
 
