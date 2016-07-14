@@ -14,10 +14,23 @@ void RenderTarget::Initialize(_In_ UINT FrameIndex, _In_ Microsoft::WRL::ComPtr<
 {
 	CreateRTV(FrameIndex, Device, SwapChain, RTVHandle);
 	CreateCommandAllocator(Device);
+
+	Fence.Initialize(Device);
 }
 
 void RenderTarget::Release()
 {
+}
+
+void RenderTarget::Reset()
+{
+	Fence.Wait();
+	CommandAllocator->Reset();
+}
+
+void RenderTarget::SetBusy(_In_ Microsoft::WRL::ComPtr<ID3D12CommandQueue> & CommandQueue)
+{
+	Fence.Set(CommandQueue);
 }
 
 Microsoft::WRL::ComPtr<ID3D12CommandAllocator>& RenderTarget::GetCommandAllocator()

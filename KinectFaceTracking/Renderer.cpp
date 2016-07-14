@@ -142,22 +142,22 @@ void Renderer::Render()
 	ExecuteCommandList();
 
 	Utility::ThrowOnFail(SwapChain->Present(0, 0));
+	BufferFrameIndex = SwapChain->GetCurrentBackBufferIndex();
 }
 
 void Renderer::PopulateCommandList()
 {
-	/*
-	Utility::ThrowOnFail(CommandAllocators[BufferFrameIndex]->Reset());
-	Utility::ThrowOnFail(CommandList->Reset(CommandAllocators[BufferFrameIndex].Get(), nullptr));
+	RenderTarget & CurrentRenderTarget = RenderTargets[BufferFrameIndex];
+
+	CurrentRenderTarget.Reset();
+	Utility::ThrowOnFail(CommandList->Reset(CurrentRenderTarget.GetCommandAllocator().Get(), nullptr));
 	Utility::ThrowOnFail(CommandList->Close());
-	*/
 }
 
 void Renderer::ExecuteCommandList()
 {
-	/*
 	ID3D12CommandList * CommandListPointer = CommandList.Get();
 	CommandQueue->ExecuteCommandLists(1, &CommandListPointer);
-	*/
-}
 
+	RenderTargets[BufferFrameIndex].SetBusy(CommandQueue);
+}
