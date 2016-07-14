@@ -3,7 +3,6 @@
 
 #include "stdafx.h"
 #include "KinectFaceTracking.h"
-#include "Resource.h"
 
 int WINAPI wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
