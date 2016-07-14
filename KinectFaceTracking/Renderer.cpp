@@ -23,8 +23,11 @@ void Renderer::Initialize()
 	CreateFactory();
 	CreateDevice();
 	CreateCommandQueue();
-	CreateSwapChain(); 
-	CreateCommandAllocator();
+	CreateSwapChain();
+	CreateRTVHeap();
+	InitializeRenderTargets();
+
+	CreateCommandList();
 }
 
 void Renderer::Release()
@@ -116,34 +119,45 @@ void Renderer::CreateRTVHeap()
 	RTVDescSize = Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 }
 
-void Renderer::CreateRTVs()
+void Renderer::InitializeRenderTargets()
 {
 	D3D12_CPU_DESCRIPTOR_HANDLE RTVHandle = RTVHeap->GetCPUDescriptorHandleForHeapStart();
 
 	for (UINT i = 0; i < BufferFrameCount; ++i)
 	{
-		Utility::ThrowOnFail(SwapChain->GetBuffer(i, IID_PPV_ARGS(&RenderTargetViews[i])));
-		Device->CreateRenderTargetView(RenderTargetViews[i].Get(), nullptr, RTVHandle);
-
+		RenderTargets[i].Initialize(i, Device, SwapChain, RTVHandle);
 		RTVHandle.ptr += RTVDescSize;
-	}
-}
-
-void Renderer::CreateCommandAllocator()
-{
-	for (UINT i = 0; i < BufferFrameCount; ++i)
-	{
-		Utility::ThrowOnFail(Device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&CommandAllocators[i])));
 	}
 }
 
 void Renderer::CreateCommandList()
 {
-	Utility::ThrowOnFail(Device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, CommandAllocators[BufferFrameIndex].Get(), nullptr, IID_PPV_ARGS(&CommandList)));
+	Utility::ThrowOnFail(Device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, RenderTargets[BufferFrameIndex].GetCommandAllocator().Get(), nullptr, IID_PPV_ARGS(&CommandList)));
 	Utility::ThrowOnFail(CommandList->Close());
 }
 
 void Renderer::Render()
 {
+	PopulateCommandList();
+	ExecuteCommandList();
+
 	Utility::ThrowOnFail(SwapChain->Present(0, 0));
 }
+
+void Renderer::PopulateCommandList()
+{
+	/*
+	Utility::ThrowOnFail(CommandAllocators[BufferFrameIndex]->Reset());
+	Utility::ThrowOnFail(CommandList->Reset(CommandAllocators[BufferFrameIndex].Get(), nullptr));
+	Utility::ThrowOnFail(CommandList->Close());
+	*/
+}
+
+void Renderer::ExecuteCommandList()
+{
+	/*
+	ID3D12CommandList * CommandListPointer = CommandList.Get();
+	CommandQueue->ExecuteCommandLists(1, &CommandListPointer);
+	*/
+}
+

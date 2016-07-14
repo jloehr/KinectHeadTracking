@@ -17,5 +17,6 @@
 #include <dxgi1_4.h>
 
 #include <string>
+#include <array>
 
 #include "Utility.h"

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "RenderTarget.h"
+
 class Window;
 
 class Renderer
@@ -14,6 +16,7 @@ public:
 	
 protected:
 	static const UINT BufferFrameCount = 2;
+	template<typename T> using BufferFrameArray = std::array<T, BufferFrameCount>;
 
 	Window & TargetWindow;
 
@@ -22,9 +25,9 @@ protected:
 	Microsoft::WRL::ComPtr<ID3D12CommandQueue> CommandQueue;
 	Microsoft::WRL::ComPtr<IDXGISwapChain3> SwapChain;
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> RTVHeap;
-	Microsoft::WRL::ComPtr<ID3D12Resource> RenderTargetViews[BufferFrameCount];
-	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> CommandAllocators[BufferFrameCount];
 	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> CommandList;
+
+	BufferFrameArray<RenderTarget> RenderTargets;
 
 	UINT RTVDescSize;
 	UINT BufferFrameIndex;
@@ -35,8 +38,10 @@ protected:
 	void CreateCommandQueue();
 	void CreateSwapChain();
 	void CreateRTVHeap();
-	void CreateRTVs();
-	void CreateCommandAllocator();
+	void InitializeRenderTargets();
 
 	void CreateCommandList();
+
+	void PopulateCommandList();
+	void ExecuteCommandList();
 };
