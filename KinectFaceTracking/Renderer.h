@@ -1,6 +1,7 @@
 #pragma once
 
 #include "RenderTarget.h"
+#include "GPUFence.h"
 
 class Window;
 
@@ -30,6 +31,7 @@ protected:
 	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> CommandList;
 
 	BufferFrameArray<RenderTarget> RenderTargets;
+	GPUFence Fence;
 
 	UINT RTVDescSize;
 	UINT BufferFrameIndex;

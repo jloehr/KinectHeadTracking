@@ -28,10 +28,13 @@ void Renderer::Initialize()
 	InitializeRenderTargets();
 
 	CreateCommandList();
+
+	Fence.Initialize(Device);
 }
 
 void Renderer::Release()
 {
+	Fence.SetAndWait(CommandQueue);
 }
 
 void Renderer::EnableDebugLayer()
