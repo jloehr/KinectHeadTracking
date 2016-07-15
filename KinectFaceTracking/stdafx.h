@@ -9,9 +9,8 @@
 
 #define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
 #include <windows.h>
-#include <wrl.h>
-
 #include <Windowsx.h>
+#include <wrl.h>
 
 #include <d3d12.h>
 #include <dxgi1_4.h>
