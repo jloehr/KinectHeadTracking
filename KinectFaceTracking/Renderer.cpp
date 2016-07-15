@@ -136,28 +136,24 @@ void Renderer::CreateCommandList()
 	Utility::ThrowOnFail(CommandList->Close());
 }
 
+D3D12_CPU_DESCRIPTOR_HANDLE Renderer::GetRTVCPUHandle()
+{
+	D3D12_CPU_DESCRIPTOR_HANDLE Result = RTVHeap->GetCPUDescriptorHandleForHeapStart();
+	Result.ptr += BufferFrameIndex * RTVDescSize;
+
+	return Result;
+}
+
 void Renderer::Render()
 {
-	PopulateCommandList();
-	ExecuteCommandList();
+	RenderTarget & CurrentRenderTarget = RenderTargets[BufferFrameIndex];
+	CurrentRenderTarget.BeginFrame(CommandList);
 
+	CommandList->ClearRenderTargetView(GetRTVCPUHandle(), BackgroundColor.data() , 0, nullptr);
+
+	CurrentRenderTarget.EndFrame(CommandList, CommandQueue);
 	Utility::ThrowOnFail(SwapChain->Present(0, 0));
 	BufferFrameIndex = SwapChain->GetCurrentBackBufferIndex();
 }
 
-void Renderer::PopulateCommandList()
-{
-	RenderTarget & CurrentRenderTarget = RenderTargets[BufferFrameIndex];
 
-	CurrentRenderTarget.Reset();
-	Utility::ThrowOnFail(CommandList->Reset(CurrentRenderTarget.GetCommandAllocator().Get(), nullptr));
-	Utility::ThrowOnFail(CommandList->Close());
-}
-
-void Renderer::ExecuteCommandList()
-{
-	ID3D12CommandList * CommandListPointer = CommandList.Get();
-	CommandQueue->ExecuteCommandLists(1, &CommandListPointer);
-
-	RenderTargets[BufferFrameIndex].SetBusy(CommandQueue);
-}

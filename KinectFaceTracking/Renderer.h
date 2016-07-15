@@ -15,6 +15,8 @@ public:
 	void Render();
 
 protected:
+	typedef std::array<float, 4> DXColor;
+	static constexpr DXColor BackgroundColor = { 0.0f, 0.2f, 0.4f, 1.0f };
 	static constexpr UINT BufferFrameCount = 2;
 	template<typename T> using BufferFrameArray = std::array<T, BufferFrameCount>;
 
@@ -42,6 +44,5 @@ protected:
 
 	void CreateCommandList();
 
-	void PopulateCommandList();
-	void ExecuteCommandList();
+	D3D12_CPU_DESCRIPTOR_HANDLE GetRTVCPUHandle();
 };
