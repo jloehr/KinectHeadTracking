@@ -149,11 +149,9 @@ void Renderer::Render()
 	RenderTarget & CurrentRenderTarget = RenderTargets[BufferFrameIndex];
 	CurrentRenderTarget.BeginFrame(CommandList);
 
-	CommandList->ClearRenderTargetView(GetRTVCPUHandle(), BackgroundColor.data() , 0, nullptr);
+	CommandList->ClearRenderTargetView(GetRTVCPUHandle(), BackgroundColor.data(), 0, nullptr);
 
 	CurrentRenderTarget.EndFrame(CommandList, CommandQueue);
 	Utility::ThrowOnFail(SwapChain->Present(0, 0));
 	BufferFrameIndex = SwapChain->GetCurrentBackBufferIndex();
 }
-
-
