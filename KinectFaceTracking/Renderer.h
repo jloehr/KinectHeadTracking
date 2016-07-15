@@ -15,7 +15,7 @@ public:
 	void Render();
 
 protected:
-	static const UINT BufferFrameCount = 2;
+	static constexpr UINT BufferFrameCount = 2;
 	template<typename T> using BufferFrameArray = std::array<T, BufferFrameCount>;
 
 	Window & TargetWindow;

@@ -13,8 +13,8 @@ public:
 	void SetAndWait(_In_ Microsoft::WRL::ComPtr<ID3D12CommandQueue> & CommandQueue);
 
 private:
-	static const UINT64 UnsetValue = 0;
-	static const UINT64 SetValue = 1;
+	static constexpr UINT64 UnsetValue = 0;
+	static constexpr UINT64 SetValue = 1;
 
 	Microsoft::WRL::ComPtr<ID3D12Fence> Fence;
 	HANDLE FenceEvent;
