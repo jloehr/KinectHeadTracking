@@ -147,6 +147,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="GPUFence.h" />
+    <ClInclude Include="GraphicsContext.h" />
     <ClInclude Include="KinectFaceTracking.h" />
     <ClInclude Include="MainWindow.h" />
     <ClInclude Include="Renderer.h" />
@@ -158,6 +159,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GPUFence.cpp" />
+    <ClCompile Include="GraphicsContext.cpp" />
     <ClCompile Include="KinectFaceTracking.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainWindow.cpp" />

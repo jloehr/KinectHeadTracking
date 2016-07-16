@@ -4,14 +4,14 @@
 #include "GPUFence.h"
 
 class Window;
+class GraphicsContext;
 
 class Renderer
 {
 public:
-	Renderer(_In_ Window & TargetWindow);
+	Renderer(_In_ GraphicsContext & DeviceContext, _In_ Window & TargetWindow);
 
 	void Initialize();
-	void Release();
 
 	void Render();
 
@@ -21,11 +21,9 @@ protected:
 	static constexpr UINT BufferFrameCount = 2;
 	template<typename T> using BufferFrameArray = std::array<T, BufferFrameCount>;
 
+	GraphicsContext & DeviceContext;
 	Window & TargetWindow;
 
-	Microsoft::WRL::ComPtr<IDXGIFactory4> Factory;
-	Microsoft::WRL::ComPtr<ID3D12Device> Device;
-	Microsoft::WRL::ComPtr<ID3D12CommandQueue> CommandQueue;
 	Microsoft::WRL::ComPtr<IDXGISwapChain3> SwapChain;
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> RTVHeap;
 	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> CommandList;
@@ -36,10 +34,6 @@ protected:
 	UINT RTVDescSize;
 	UINT BufferFrameIndex;
 
-	void EnableDebugLayer();
-	void CreateFactory();
-	void CreateDevice();
-	void CreateCommandQueue();
 	void CreateSwapChain();
 	void CreateRTVHeap();
 	void InitializeRenderTargets();

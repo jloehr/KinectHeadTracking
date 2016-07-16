@@ -5,7 +5,7 @@
 #include "KinectFaceTracking.h"
 
 KinectFaceTracking::KinectFaceTracking(_In_ HINSTANCE Instance)
-	:Instance(Instance), Window(Renderer), Renderer(Window)
+	:Instance(Instance), Window(Renderer), Renderer(GraphicsDevice, Window)
 {
 }
 
@@ -35,6 +35,8 @@ int KinectFaceTracking::Run(_In_ int CmdShow)
 
 void KinectFaceTracking::Initialize(_In_ int CmdShow)
 {
+	GraphicsDevice.Initialize();
+
 	Window.Create(Instance);
 	Renderer.Initialize();
 
@@ -43,5 +45,5 @@ void KinectFaceTracking::Initialize(_In_ int CmdShow)
 
 void KinectFaceTracking::Destroy()
 {
-	Renderer.Release();
+	GraphicsDevice.Release();
 }

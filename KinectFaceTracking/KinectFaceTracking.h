@@ -1,6 +1,7 @@
 #pragma once
 
 #include "MainWindow.h"
+#include "GraphicsContext.h"
 #include "Renderer.h"
 
 class KinectFaceTracking
@@ -14,6 +15,7 @@ private:
 	HINSTANCE Instance;
 
 	MainWindow Window;
+	GraphicsContext GraphicsDevice;
 	Renderer Renderer;
 
 	void Initialize(_In_ int CmdShow);

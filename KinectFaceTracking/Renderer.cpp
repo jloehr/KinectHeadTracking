@@ -4,10 +4,11 @@
 #include "stdafx.h"
 #include "Renderer.h"
 
+#include "GraphicsContext.h"
 #include "Window.h"
 
-Renderer::Renderer(_In_ Window & TargetWindow)
-	:TargetWindow(TargetWindow)
+Renderer::Renderer(_In_ GraphicsContext & DeviceContext, _In_ Window & TargetWindow)
+	:DeviceContext(DeviceContext), TargetWindow(TargetWindow)
 	,RTVDescSize(0), BufferFrameIndex(0)
 {
 }
@@ -19,75 +20,13 @@ void Renderer::Initialize()
 		Utility::Throw(L"Window Handle is invalid!");
 	}
 
-	EnableDebugLayer();
-	CreateFactory();
-	CreateDevice();
-	CreateCommandQueue();
 	CreateSwapChain();
 	CreateRTVHeap();
 	InitializeRenderTargets();
 
 	CreateCommandList();
 
-	Fence.Initialize(Device);
-}
-
-void Renderer::Release()
-{
-	Fence.SetAndWait(CommandQueue);
-}
-
-void Renderer::EnableDebugLayer()
-{
-#if defined(_DEBUG)
-	Microsoft::WRL::ComPtr<ID3D12Debug> DebugController;
-	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&DebugController))))
-	{
-		DebugController->EnableDebugLayer();
-	}
-#endif
-}
-
-void Renderer::CreateFactory()
-{
-	Utility::ThrowOnFail(CreateDXGIFactory1(IID_PPV_ARGS(&Factory)));
-}
-
-void Renderer::CreateDevice()
-{
-	Microsoft::WRL::ComPtr<IDXGIAdapter1> HardwareAdapter;
-
-	for (UINT AdapterIndex = 0; Factory->EnumAdapters1(AdapterIndex, &HardwareAdapter) != DXGI_ERROR_NOT_FOUND; ++AdapterIndex)
-	{
-		DXGI_ADAPTER_DESC1 Desc;
-		HardwareAdapter->GetDesc1(&Desc);
-
-		if (Desc.Flags & DXGI_ADAPTER_FLAG_SOFTWARE)
-		{
-			// Skip the software adapter
-			continue;
-		}
-
-		if (SUCCEEDED(D3D12CreateDevice(HardwareAdapter.Get(), D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&Device))))
-		{
-			break;
-		}
-	}
-
-	if (Device == nullptr)
-	{
-		Utility::Throw(L"No Device was created!");
-	}
-
-}
-
-void Renderer::CreateCommandQueue()
-{
-	D3D12_COMMAND_QUEUE_DESC CommandQueueDesc = {};
-	CommandQueueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
-	CommandQueueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
-
-	Utility::ThrowOnFail(Device->CreateCommandQueue(&CommandQueueDesc, IID_PPV_ARGS(&CommandQueue)));
+	Fence.Initialize(DeviceContext.GetDevice());
 }
 
 void Renderer::CreateSwapChain()
@@ -104,7 +43,7 @@ void Renderer::CreateSwapChain()
 	SwapChainDesc.Height = Size.second;
 
 	Microsoft::WRL::ComPtr<IDXGISwapChain1> HelperSwapChain;
-	Utility::ThrowOnFail(Factory->CreateSwapChainForHwnd(CommandQueue.Get(), TargetWindow.GetHandle(), &SwapChainDesc, nullptr, nullptr, &HelperSwapChain));
+	Utility::ThrowOnFail(DeviceContext.GetFactory()->CreateSwapChainForHwnd(DeviceContext.GetCommandQueue().Get(), TargetWindow.GetHandle(), &SwapChainDesc, nullptr, nullptr, &HelperSwapChain));
 
 	Utility::ThrowOnFail(HelperSwapChain.As(&SwapChain));
 	BufferFrameIndex = SwapChain->GetCurrentBackBufferIndex();
@@ -117,9 +56,9 @@ void Renderer::CreateRTVHeap()
 	RTVHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
 	RTVHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 
-	Utility::ThrowOnFail(Device->CreateDescriptorHeap(&RTVHeapDesc, IID_PPV_ARGS(&RTVHeap)));
+	Utility::ThrowOnFail(DeviceContext.GetDevice()->CreateDescriptorHeap(&RTVHeapDesc, IID_PPV_ARGS(&RTVHeap)));
 
-	RTVDescSize = Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+	RTVDescSize = DeviceContext.GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 }
 
 void Renderer::InitializeRenderTargets()
@@ -128,14 +67,14 @@ void Renderer::InitializeRenderTargets()
 
 	for (UINT i = 0; i < BufferFrameCount; ++i)
 	{
-		RenderTargets[i].Initialize(i, Device, SwapChain, RTVHandle);
+		RenderTargets[i].Initialize(i, DeviceContext.GetDevice(), SwapChain, RTVHandle);
 		RTVHandle.ptr += RTVDescSize;
 	}
 }
 
 void Renderer::CreateCommandList()
 {
-	Utility::ThrowOnFail(Device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, RenderTargets[BufferFrameIndex].GetCommandAllocator().Get(), nullptr, IID_PPV_ARGS(&CommandList)));
+	Utility::ThrowOnFail(DeviceContext.GetDevice()->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, RenderTargets[BufferFrameIndex].GetCommandAllocator().Get(), nullptr, IID_PPV_ARGS(&CommandList)));
 	Utility::ThrowOnFail(CommandList->Close());
 }
 
@@ -154,7 +93,7 @@ void Renderer::Render()
 
 	CommandList->ClearRenderTargetView(GetRTVCPUHandle(), BackgroundColor.data(), 0, nullptr);
 
-	CurrentRenderTarget.EndFrame(CommandList, CommandQueue);
+	CurrentRenderTarget.EndFrame(CommandList, DeviceContext.GetCommandQueue());
 	Utility::ThrowOnFail(SwapChain->Present(0, 0));
 	BufferFrameIndex = SwapChain->GetCurrentBackBufferIndex();
 }
