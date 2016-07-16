@@ -20,7 +20,7 @@ GPUFence::~GPUFence()
 
 void GPUFence::Initialize(_In_ Microsoft::WRL::ComPtr<ID3D12Device>& Device)
 {
-	Utility::ThrowOnFail(Device->CreateFence(SetValue, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&Fence)));
+	Utility::ThrowOnFail(Device->CreateFence(ReadyValue, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&Fence)));
 
 	FenceEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
 	if (Fence == nullptr)
@@ -31,15 +31,15 @@ void GPUFence::Initialize(_In_ Microsoft::WRL::ComPtr<ID3D12Device>& Device)
 
 void GPUFence::Set(_In_ Microsoft::WRL::ComPtr<ID3D12CommandQueue> & CommandQueue)
 {
-	Utility::ThrowOnFail(Fence->Signal(UnsetValue));
-	CommandQueue->Signal(Fence.Get(), SetValue);
+	Utility::ThrowOnFail(Fence->Signal(BusyValue));
+	CommandQueue->Signal(Fence.Get(), ReadyValue);
 }
 
 void GPUFence::Wait()
 {
-	if (Fence->GetCompletedValue() == UnsetValue)
+	if (Fence->GetCompletedValue() == BusyValue)
 	{
-		Utility::ThrowOnFail(Fence->SetEventOnCompletion(SetValue, FenceEvent));
+		Utility::ThrowOnFail(Fence->SetEventOnCompletion(ReadyValue, FenceEvent));
 		WaitForSingleObjectEx(FenceEvent, INFINITE, FALSE);
 	}
 }
