@@ -26,6 +26,8 @@ protected:
 
 	Microsoft::WRL::ComPtr<IDXGISwapChain3> SwapChain;
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> RTVHeap;
+	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> DSVHeap;
+	Microsoft::WRL::ComPtr<ID3D12Resource> DepthStencelView;
 	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> CommandList;
 
 	BufferFrameArray<RenderTarget> RenderTargets;
@@ -36,6 +38,8 @@ protected:
 
 	void CreateSwapChain();
 	void CreateRTVHeap();
+	void CreateDSVHeap();
+	void CreateDepthStencilView();
 	void InitializeRenderTargets();
 
 	void CreateCommandList();

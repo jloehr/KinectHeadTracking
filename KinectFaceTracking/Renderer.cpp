@@ -22,6 +22,8 @@ void Renderer::Initialize()
 
 	CreateSwapChain();
 	CreateRTVHeap();
+	CreateDSVHeap();
+	CreateDepthStencilView();
 	InitializeRenderTargets();
 
 	CreateCommandList();
@@ -61,6 +63,36 @@ void Renderer::CreateRTVHeap()
 	RTVDescSize = DeviceContext.GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 }
 
+void Renderer::CreateDSVHeap()
+{
+	D3D12_DESCRIPTOR_HEAP_DESC DSVHeapDesc = {};
+	DSVHeapDesc.NumDescriptors = 1;
+	DSVHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
+	DSVHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+
+	Utility::ThrowOnFail(DeviceContext.GetDevice()->CreateDescriptorHeap(&DSVHeapDesc, IID_PPV_ARGS(&DSVHeap)));
+}
+
+void Renderer::CreateDepthStencilView()
+{
+	D3D12_DEPTH_STENCIL_VIEW_DESC DepthStencilViewDesc = {};
+	DepthStencilViewDesc.Format = DXGI_FORMAT_D32_FLOAT;
+	DepthStencilViewDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
+	DepthStencilViewDesc.Flags = D3D12_DSV_FLAG_NONE;
+
+	D3D12_CLEAR_VALUE DSVClearValue = {};
+	DSVClearValue.Format = DXGI_FORMAT_D32_FLOAT;
+	DSVClearValue.DepthStencil.Depth = 1.0f;
+	DSVClearValue.DepthStencil.Stencil = 0;
+
+	Window::WindowSize Size = TargetWindow.GetWindowSize();
+	CD3DX12_RESOURCE_DESC ResourceDesc = CD3DX12_RESOURCE_DESC::Tex2D(DXGI_FORMAT_D32_FLOAT, Size.first, Size.second, 1, 0, 1, 0, D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL);
+
+	Utility::ThrowOnFail(DeviceContext.GetDevice()->CreateCommittedResource(&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT), D3D12_HEAP_FLAG_NONE, &ResourceDesc, D3D12_RESOURCE_STATE_DEPTH_WRITE, &DSVClearValue, IID_PPV_ARGS(&DepthStencelView)));
+
+	DeviceContext.GetDevice()->CreateDepthStencilView(DepthStencelView.Get(), &DepthStencilViewDesc, DSVHeap->GetCPUDescriptorHandleForHeapStart());
+}
+
 void Renderer::InitializeRenderTargets()
 {
 	CD3DX12_CPU_DESCRIPTOR_HANDLE RTVHandle(RTVHeap->GetCPUDescriptorHandleForHeapStart());
@@ -88,7 +120,12 @@ void Renderer::Render()
 	RenderTarget & CurrentRenderTarget = RenderTargets[BufferFrameIndex];
 	CurrentRenderTarget.BeginFrame(CommandList);
 
+	CD3DX12_CPU_DESCRIPTOR_HANDLE RTVHandle(GetRTVCPUHandle());
+	CD3DX12_CPU_DESCRIPTOR_HANDLE DSVHandle(DSVHeap->GetCPUDescriptorHandleForHeapStart());
+
+	CommandList->OMSetRenderTargets(1, &RTVHandle, FALSE, &DSVHandle);
 	CommandList->ClearRenderTargetView(GetRTVCPUHandle(), BackgroundColor.data(), 0, nullptr);
+	CommandList->ClearDepthStencilView(DSVHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
 	CurrentRenderTarget.EndFrame(CommandList, DeviceContext.GetCommandQueue());
 	Utility::ThrowOnFail(SwapChain->Present(0, 0));
