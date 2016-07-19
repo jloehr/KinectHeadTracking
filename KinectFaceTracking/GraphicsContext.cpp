@@ -76,7 +76,6 @@ void GraphicsContext::CreateDevice()
 	{
 		Utility::Throw(L"No Device was created!");
 	}
-
 }
 
 void GraphicsContext::CreateCommandQueue()

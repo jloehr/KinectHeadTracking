@@ -40,5 +40,5 @@ protected:
 
 	void CreateCommandList();
 
-	D3D12_CPU_DESCRIPTOR_HANDLE GetRTVCPUHandle();
+	CD3DX12_CPU_DESCRIPTOR_HANDLE GetRTVCPUHandle();
 };

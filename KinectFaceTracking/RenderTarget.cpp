@@ -10,7 +10,7 @@ RenderTarget::RenderTarget()
 {
 }
 
-void RenderTarget::Initialize(_In_ UINT FrameIndex, _In_ Microsoft::WRL::ComPtr<ID3D12Device> & Device, _In_ Microsoft::WRL::ComPtr<IDXGISwapChain3> & SwapChain, _In_ const D3D12_CPU_DESCRIPTOR_HANDLE & RTVHandle)
+void RenderTarget::Initialize(_In_ UINT FrameIndex, _In_ Microsoft::WRL::ComPtr<ID3D12Device> & Device, _In_ Microsoft::WRL::ComPtr<IDXGISwapChain3> & SwapChain, _In_ const CD3DX12_CPU_DESCRIPTOR_HANDLE & RTVHandle)
 {
 	CreateRTV(FrameIndex, Device, SwapChain, RTVHandle);
 	CreateCommandAllocator(Device);
@@ -31,7 +31,6 @@ void RenderTarget::BeginFrame(_In_ Microsoft::WRL::ComPtr<ID3D12GraphicsCommandL
 	Utility::ThrowOnFail(CommandList->Reset(CommandAllocator.Get(), nullptr));
 	
 	CommandList->ResourceBarrier(1, &RenderTargetTransition);
-
 }
 
 void RenderTarget::EndFrame(_In_ Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> & CommandList, _In_ Microsoft::WRL::ComPtr<ID3D12CommandQueue> & CommandQueue)
@@ -51,7 +50,7 @@ Microsoft::WRL::ComPtr<ID3D12CommandAllocator>& RenderTarget::GetCommandAllocato
 	return CommandAllocator;
 }
 
-void RenderTarget::CreateRTV(_In_ UINT FrameIndex, _In_ Microsoft::WRL::ComPtr<ID3D12Device> & Device, _In_ Microsoft::WRL::ComPtr<IDXGISwapChain3> & SwapChain, _In_ const D3D12_CPU_DESCRIPTOR_HANDLE & RTVHandle)
+void RenderTarget::CreateRTV(_In_ UINT FrameIndex, _In_ Microsoft::WRL::ComPtr<ID3D12Device> & Device, _In_ Microsoft::WRL::ComPtr<IDXGISwapChain3> & SwapChain, _In_ const CD3DX12_CPU_DESCRIPTOR_HANDLE & RTVHandle)
 {
 	Utility::ThrowOnFail(SwapChain->GetBuffer(FrameIndex, IID_PPV_ARGS(&RenderTargetView)));
 	Device->CreateRenderTargetView(RenderTargetView.Get(), nullptr, RTVHandle);
@@ -62,13 +61,7 @@ void RenderTarget::CreateCommandAllocator(_In_ Microsoft::WRL::ComPtr<ID3D12Devi
 	Utility::ThrowOnFail(Device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&CommandAllocator)));
 }
 
-void RenderTarget::InitializeTransitionBarrier(_Inout_ D3D12_RESOURCE_BARRIER & Barrier, _In_ D3D12_RESOURCE_STATES StateBefore, _In_ D3D12_RESOURCE_STATES StateAfter)
+void RenderTarget::InitializeTransitionBarrier(_Inout_ CD3DX12_RESOURCE_BARRIER & Barrier, _In_ D3D12_RESOURCE_STATES StateBefore, _In_ D3D12_RESOURCE_STATES StateAfter)
 {
-	ZeroMemory(&Barrier, sizeof(Barrier));
-	Barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
-	Barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
-	Barrier.Transition.pResource = RenderTargetView.Get();
-	Barrier.Transition.StateBefore = StateBefore;
-	Barrier.Transition.StateAfter = StateAfter;
-	Barrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
+	Barrier = CD3DX12_RESOURCE_BARRIER::Transition(RenderTargetView.Get(), StateBefore, StateAfter);
 }

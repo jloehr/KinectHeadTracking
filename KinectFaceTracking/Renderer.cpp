@@ -63,12 +63,12 @@ void Renderer::CreateRTVHeap()
 
 void Renderer::InitializeRenderTargets()
 {
-	D3D12_CPU_DESCRIPTOR_HANDLE RTVHandle = RTVHeap->GetCPUDescriptorHandleForHeapStart();
+	CD3DX12_CPU_DESCRIPTOR_HANDLE RTVHandle(RTVHeap->GetCPUDescriptorHandleForHeapStart());
 
 	for (UINT i = 0; i < BufferFrameCount; ++i)
 	{
 		RenderTargets[i].Initialize(i, DeviceContext.GetDevice(), SwapChain, RTVHandle);
-		RTVHandle.ptr += RTVDescSize;
+		RTVHandle.Offset(RTVDescSize);
 	}
 }
 
@@ -78,12 +78,9 @@ void Renderer::CreateCommandList()
 	Utility::ThrowOnFail(CommandList->Close());
 }
 
-D3D12_CPU_DESCRIPTOR_HANDLE Renderer::GetRTVCPUHandle()
+CD3DX12_CPU_DESCRIPTOR_HANDLE Renderer::GetRTVCPUHandle()
 {
-	D3D12_CPU_DESCRIPTOR_HANDLE Result = RTVHeap->GetCPUDescriptorHandleForHeapStart();
-	Result.ptr += BufferFrameIndex * RTVDescSize;
-
-	return Result;
+	return CD3DX12_CPU_DESCRIPTOR_HANDLE(RTVHeap->GetCPUDescriptorHandleForHeapStart(), BufferFrameIndex, RTVDescSize);
 }
 
 void Renderer::Render()

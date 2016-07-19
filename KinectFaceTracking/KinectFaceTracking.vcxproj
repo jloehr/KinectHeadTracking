@@ -146,6 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="d3dx12.h" />
     <ClInclude Include="GPUFence.h" />
     <ClInclude Include="GraphicsContext.h" />
     <ClInclude Include="KinectFaceTracking.h" />
