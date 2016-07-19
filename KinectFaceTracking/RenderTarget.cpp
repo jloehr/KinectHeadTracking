@@ -12,16 +12,22 @@ RenderTarget::RenderTarget()
 
 void RenderTarget::Initialize(_In_ UINT FrameIndex, _In_ Microsoft::WRL::ComPtr<ID3D12Device> & Device, _In_ Microsoft::WRL::ComPtr<IDXGISwapChain3> & SwapChain, _In_ const CD3DX12_CPU_DESCRIPTOR_HANDLE & RTVHandle)
 {
-	CreateRTV(FrameIndex, Device, SwapChain, RTVHandle);
 	CreateCommandAllocator(Device);
-	InitializeTransitionBarrier(RenderTargetTransition, D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
-	InitializeTransitionBarrier(PresentTransition, D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
+	CreateWindowSizeDependendResources(FrameIndex, Device, SwapChain, RTVHandle);
 
 	Fence.Initialize(Device);
 }
 
-void RenderTarget::Release()
+void RenderTarget::CreateWindowSizeDependendResources(_In_ UINT FrameIndex, _In_ Microsoft::WRL::ComPtr<ID3D12Device> & Device, _In_ Microsoft::WRL::ComPtr<IDXGISwapChain3> & SwapChain, _In_ const CD3DX12_CPU_DESCRIPTOR_HANDLE & RTVHandle)
 {
+	CreateRTV(FrameIndex, Device, SwapChain, RTVHandle);
+	InitializeTransitionBarrier(RenderTargetTransition, D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
+	InitializeTransitionBarrier(PresentTransition, D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
+}
+
+void RenderTarget::ReleaseWindowSizeDependendResources()
+{
+	RenderTargetView.Reset();
 }
 
 void RenderTarget::BeginFrame(_In_ Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> & CommandList)

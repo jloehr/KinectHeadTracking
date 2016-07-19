@@ -8,7 +8,7 @@ Camera::Camera()
 {
 }
 
-void Camera::UpdateCamera(Window::WindowSize Size)
+void Camera::UpdateCamera(_In_ const Window::WindowSize & Size)
 {
 	float AspectRatio = static_cast<float>(Size.first) / static_cast<float>(Size.second);
 

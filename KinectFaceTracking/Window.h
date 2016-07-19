@@ -20,6 +20,7 @@ protected:
 	WindowSize Size;
 	Renderer & WindowRenderer;
 
+	WindowSize QueryWindowSize();
 	void UpdateWindowSize();
 
 	virtual const std::wstring & RegisterWindowClass(_In_ HINSTANCE Instance) = 0;

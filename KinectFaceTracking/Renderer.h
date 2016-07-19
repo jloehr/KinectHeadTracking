@@ -3,8 +3,8 @@
 #include "RenderTarget.h"
 #include "GPUFence.h"
 #include "Camera.h"
+#include "Window.h"
 
-class Window;
 class GraphicsContext;
 class Model;
 
@@ -16,6 +16,8 @@ public:
 	void Initialize();
 
 	void Render(_In_ Model Cube);
+
+	void OnWindowSizeChange(_In_ const Window::WindowSize & NewSize);
 
 protected:
 	typedef std::array<float, 4> DXColor;
@@ -50,7 +52,11 @@ protected:
 
 	void CreateCommandList();
 
-	void UpdateViewportAndScissorRect();
+	void ResizeBuffers(_In_ const Window::WindowSize & NewSize);
+	void ReleaseSizeDependentBuffers();
+	void ResizeSwapChain(_In_ const Window::WindowSize & NewSize);
+	void RecreateSizeDependentBuffers();
+	void UpdateViewportAndScissorRect(_In_ const Window::WindowSize & Size);
 
 	CD3DX12_CPU_DESCRIPTOR_HANDLE GetRTVCPUHandle();
 };

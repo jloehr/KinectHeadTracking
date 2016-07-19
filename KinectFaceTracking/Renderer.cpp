@@ -31,8 +31,9 @@ void Renderer::Initialize()
 
 	CreateCommandList();
 
-	Camera.UpdateCamera(TargetWindow.GetWindowSize());
-	UpdateViewportAndScissorRect();
+	const Window::WindowSize & WindowSize = TargetWindow.GetWindowSize();
+	Camera.UpdateCamera(WindowSize);
+	UpdateViewportAndScissorRect(WindowSize);
 
 	Fence.Initialize(DeviceContext.GetDevice());
 }
@@ -116,10 +117,47 @@ void Renderer::CreateCommandList()
 	Utility::ThrowOnFail(CommandList->Close());
 }
 
-void Renderer::UpdateViewportAndScissorRect()
+void Renderer::ResizeBuffers(_In_ const Window::WindowSize & NewSize)
 {
-	Window::WindowSize Size = TargetWindow.GetWindowSize();
+	ReleaseSizeDependentBuffers();
+	ResizeSwapChain(NewSize);
+	RecreateSizeDependentBuffers();
+}
 
+void Renderer::ReleaseSizeDependentBuffers()
+{
+	for (UINT i = 0; i < BufferFrameCount; ++i)
+	{
+		RenderTargets[i].ReleaseWindowSizeDependendResources();
+	}
+
+	DepthStencelView.Reset();
+}
+
+void Renderer::ResizeSwapChain(_In_ const Window::WindowSize & NewSize)
+{
+	DXGI_SWAP_CHAIN_DESC SwapChainDesc = {};
+	SwapChain->GetDesc(&SwapChainDesc);
+	Utility::ThrowOnFail(SwapChain->ResizeBuffers(BufferFrameCount, NewSize.first, NewSize.second, SwapChainDesc.BufferDesc.Format, SwapChainDesc.Flags));
+
+	BufferFrameIndex = SwapChain->GetCurrentBackBufferIndex();
+}
+
+void Renderer::RecreateSizeDependentBuffers()
+{
+	CD3DX12_CPU_DESCRIPTOR_HANDLE RTVHandle(RTVHeap->GetCPUDescriptorHandleForHeapStart());
+
+	for (UINT i = 0; i < BufferFrameCount; ++i)
+	{
+		RenderTargets[i].CreateWindowSizeDependendResources(i, DeviceContext.GetDevice(), SwapChain, RTVHandle);
+		RTVHandle.Offset(RTVDescSize);
+	}
+
+	CreateDepthStencilView();
+}
+
+void Renderer::UpdateViewportAndScissorRect(_In_ const Window::WindowSize & Size)
+{
 	Viewport.Width = static_cast<float>(Size.first);
 	Viewport.Height = static_cast<float>(Size.second);
 	Viewport.MaxDepth = 1.0f;
@@ -154,4 +192,13 @@ void Renderer::Render(_In_ Model Cube)
 	CurrentRenderTarget.EndFrame(CommandList, DeviceContext.GetCommandQueue());
 	Utility::ThrowOnFail(SwapChain->Present(0, 0));
 	BufferFrameIndex = SwapChain->GetCurrentBackBufferIndex();
+}
+
+void Renderer::OnWindowSizeChange(_In_ const Window::WindowSize & NewSize)
+{
+	Fence.SetAndWait(DeviceContext.GetCommandQueue());
+
+	ResizeBuffers(NewSize);
+	UpdateViewportAndScissorRect(NewSize);
+	Camera.UpdateCamera(NewSize);
 }

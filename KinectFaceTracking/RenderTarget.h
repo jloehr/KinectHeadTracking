@@ -8,7 +8,9 @@ public:
 	RenderTarget();
 
 	void Initialize(_In_ UINT FrameIndex, _In_ Microsoft::WRL::ComPtr<ID3D12Device> & Device, _In_ Microsoft::WRL::ComPtr<IDXGISwapChain3> & SwapChain, _In_ const CD3DX12_CPU_DESCRIPTOR_HANDLE & RTVHandle);
-	void Release();
+
+	void CreateWindowSizeDependendResources(_In_ UINT FrameIndex, _In_ Microsoft::WRL::ComPtr<ID3D12Device> & Device, _In_ Microsoft::WRL::ComPtr<IDXGISwapChain3> & SwapChain, _In_ const CD3DX12_CPU_DESCRIPTOR_HANDLE & RTVHandle);
+	void ReleaseWindowSizeDependendResources();
 
 	void BeginFrame(_In_ Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> & CommandList);
 	void EndFrame(_In_ Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> & CommandList, _In_ Microsoft::WRL::ComPtr<ID3D12CommandQueue> & CommandQueue);

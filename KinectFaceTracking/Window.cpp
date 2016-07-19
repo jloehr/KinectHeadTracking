@@ -38,7 +38,7 @@ void Window::Create(_In_ HINSTANCE Instance)
 		Utility::Throw(L"Failed to create Window!");
 	}
 
-	UpdateWindowSize();
+	Size = QueryWindowSize();
 }
 
 void Window::Show(int CmdShow)
@@ -56,12 +56,22 @@ const Window::WindowSize & Window::GetWindowSize() const
 	return Size;
 }
 
-void Window::UpdateWindowSize()
+Window::WindowSize Window::QueryWindowSize()
 {
 	RECT Rect = {};
 	GetClientRect(WindowHandle, &Rect);
 
-	Size.first = Rect.right - Rect.left;
-	Size.second = Rect.bottom - Rect.top;
+	return WindowSize(Rect.right - Rect.left, Rect.bottom - Rect.top);
+}
+
+void Window::UpdateWindowSize()
+{
+	WindowSize NewSize = QueryWindowSize();
+
+	if (NewSize != Size)
+	{
+		Size = NewSize;
+		WindowRenderer.OnWindowSizeChange(Size);
+	}
 }
 

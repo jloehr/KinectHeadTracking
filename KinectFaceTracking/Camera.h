@@ -7,7 +7,7 @@ class Camera
 public:
 	Camera();
 
-	void UpdateCamera(_In_ Window::WindowSize Size);
+	void UpdateCamera(_In_ const Window::WindowSize & Size);
 
 	const DirectX::XMFLOAT4X4 & GetViewMatrix();
 	const DirectX::XMFLOAT4X4 & GetProjectionMatrix();
