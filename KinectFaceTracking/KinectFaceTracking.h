@@ -3,6 +3,7 @@
 #include "MainWindow.h"
 #include "GraphicsContext.h"
 #include "Renderer.h"
+#include "Model.h"
 
 class KinectFaceTracking
 {
@@ -17,6 +18,7 @@ private:
 	MainWindow Window;
 	GraphicsContext GraphicsDevice;
 	Renderer Renderer;
+	Model Cube;
 
 	void Initialize(_In_ int CmdShow);
 	void Destroy();

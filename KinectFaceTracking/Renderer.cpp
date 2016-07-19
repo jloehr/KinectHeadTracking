@@ -7,8 +7,11 @@
 #include "GraphicsContext.h"
 #include "Window.h"
 
+#include "Model.h"
+
 Renderer::Renderer(_In_ GraphicsContext & DeviceContext, _In_ Window & TargetWindow)
 	:DeviceContext(DeviceContext), TargetWindow(TargetWindow)
+	,Viewport(), ScissorRect()
 	,RTVDescSize(0), BufferFrameIndex(0)
 {
 }
@@ -27,6 +30,9 @@ void Renderer::Initialize()
 	InitializeRenderTargets();
 
 	CreateCommandList();
+
+	Camera.UpdateCamera(TargetWindow.GetWindowSize());
+	UpdateViewportAndScissorRect();
 
 	Fence.Initialize(DeviceContext.GetDevice());
 }
@@ -110,12 +116,24 @@ void Renderer::CreateCommandList()
 	Utility::ThrowOnFail(CommandList->Close());
 }
 
+void Renderer::UpdateViewportAndScissorRect()
+{
+	Window::WindowSize Size = TargetWindow.GetWindowSize();
+
+	Viewport.Width = static_cast<float>(Size.first);
+	Viewport.Height = static_cast<float>(Size.second);
+	Viewport.MaxDepth = 1.0f;
+
+	ScissorRect.right = static_cast<LONG>(Size.first);
+	ScissorRect.bottom = static_cast<LONG>(Size.second);
+}
+
 CD3DX12_CPU_DESCRIPTOR_HANDLE Renderer::GetRTVCPUHandle()
 {
 	return CD3DX12_CPU_DESCRIPTOR_HANDLE(RTVHeap->GetCPUDescriptorHandleForHeapStart(), BufferFrameIndex, RTVDescSize);
 }
 
-void Renderer::Render()
+void Renderer::Render(_In_ Model Cube)
 {
 	RenderTarget & CurrentRenderTarget = RenderTargets[BufferFrameIndex];
 	CurrentRenderTarget.BeginFrame(CommandList);
@@ -126,6 +144,12 @@ void Renderer::Render()
 	CommandList->OMSetRenderTargets(1, &RTVHandle, FALSE, &DSVHandle);
 	CommandList->ClearRenderTargetView(GetRTVCPUHandle(), BackgroundColor.data(), 0, nullptr);
 	CommandList->ClearDepthStencilView(DSVHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+
+	CommandList->RSSetViewports(1, &Viewport);
+	CommandList->RSSetScissorRects(1, &ScissorRect);
+
+	// Render Objects
+	Cube.Render(CommandList, Camera);
 
 	CurrentRenderTarget.EndFrame(CommandList, DeviceContext.GetCommandQueue());
 	Utility::ThrowOnFail(SwapChain->Present(0, 0));

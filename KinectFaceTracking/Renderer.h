@@ -2,9 +2,11 @@
 
 #include "RenderTarget.h"
 #include "GPUFence.h"
+#include "Camera.h"
 
 class Window;
 class GraphicsContext;
+class Model;
 
 class Renderer
 {
@@ -13,7 +15,7 @@ public:
 
 	void Initialize();
 
-	void Render();
+	void Render(_In_ Model Cube);
 
 protected:
 	typedef std::array<float, 4> DXColor;
@@ -30,6 +32,10 @@ protected:
 	Microsoft::WRL::ComPtr<ID3D12Resource> DepthStencelView;
 	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> CommandList;
 
+	Camera Camera;
+	D3D12_VIEWPORT Viewport;
+	D3D12_RECT ScissorRect;
+
 	BufferFrameArray<RenderTarget> RenderTargets;
 	GPUFence Fence;
 
@@ -43,6 +49,8 @@ protected:
 	void InitializeRenderTargets();
 
 	void CreateCommandList();
+
+	void UpdateViewportAndScissorRect();
 
 	CD3DX12_CPU_DESCRIPTOR_HANDLE GetRTVCPUHandle();
 };

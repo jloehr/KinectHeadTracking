@@ -6,6 +6,7 @@
 
 KinectFaceTracking::KinectFaceTracking(_In_ HINSTANCE Instance)
 	:Instance(Instance), Window(Renderer), Renderer(GraphicsDevice, Window)
+	,Cube(GraphicsDevice)
 {
 }
 
@@ -24,7 +25,7 @@ int KinectFaceTracking::Run(_In_ int CmdShow)
 
 		// Update
 		// Render
-		Renderer.Render();
+		Renderer.Render(Cube);
 
 	} while (Message.message != WM_QUIT);
 
@@ -41,6 +42,8 @@ void KinectFaceTracking::Initialize(_In_ int CmdShow)
 	Renderer.Initialize();
 
 	Window.Show(CmdShow);
+
+	Cube.Create();
 }
 
 void KinectFaceTracking::Destroy()

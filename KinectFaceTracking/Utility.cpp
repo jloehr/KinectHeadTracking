@@ -8,8 +8,12 @@ namespace Utility
 {
 	void Throw(_In_opt_ LPCWSTR Message)
 	{
-		OutputDebugString(Message);
-		OutputDebugString(L"\n");
+		if (Message != nullptr)
+		{
+			OutputDebugStringW(Message);
+			OutputDebugStringW(L"\n");
+		}
+
 		DebugBreak();
 	}
 
@@ -18,6 +22,22 @@ namespace Utility
 		if (FAILED(hr))
 		{
 			Throw(Message);
+		}
+	}
+
+	void ThrowOnFail(HRESULT hr, Microsoft::WRL::ComPtr<ID3DBlob> & Error)
+	{
+		if (FAILED(hr))
+		{
+			std::wstring Message;
+
+			if (Error)
+			{
+				std::string ANSIMessage(static_cast<const char *>(Error->GetBufferPointer()));
+				Message.assign(ANSIMessage.begin(), ANSIMessage.end());
+			}
+
+			Throw(Message.c_str());
 		}
 	}
 }
