@@ -111,6 +111,7 @@ void Model::CreatePipelineState()
 	PipelineStateDesc.SampleDesc.Count = 1;
 	PipelineStateDesc.NumRenderTargets = 1;
 	PipelineStateDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+	PipelineStateDesc.DSVFormat = DXGI_FORMAT_D32_FLOAT;
 	PipelineStateDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 
 	Utility::ThrowOnFail(DeviceContext.GetDevice()->CreateGraphicsPipelineState(&PipelineStateDesc, IID_PPV_ARGS(&PipelineState)));
