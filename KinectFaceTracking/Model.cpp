@@ -39,7 +39,7 @@ void Model::Create()
 	Fence.SetAndWait(DeviceContext.GetCommandQueue());
 }
 
-void Model::Render(_In_ Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> & CommandList, _In_ Camera & Camera)
+void Model::Render(_In_ Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> & CommandList, _In_ Camera & Camera, _In_ const TransformList & Objects)
 {
 	CommandList->SetPipelineState(PipelineState.Get());
 	CommandList->SetGraphicsRootSignature(RootSignature.Get());
@@ -55,13 +55,13 @@ void Model::Render(_In_ Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> & Comm
 	CommandList->SetGraphicsRoot32BitConstants(0, Num32BitPerMatrix, &ViewMatrix, 0);
 	CommandList->SetGraphicsRoot32BitConstants(0, Num32BitPerMatrix, &ProjectionMatrix, Num32BitPerMatrix);
 
-	DirectX::XMMATRIX Object = DirectX::XMMatrixIdentity() * DirectX::XMMatrixRotationRollPitchYaw(33.f, 5.f, 47.f);
-	DirectX::XMFLOAT4X4 ObjectMatrix;
-	DirectX::XMStoreFloat4x4(&ObjectMatrix, Object);
+	for (const Transform & Object : Objects)
+	{
+		const DirectX::XMFLOAT4X4 & ObjectMatrix = Object.GetMatrix();
 
-	CommandList->SetGraphicsRoot32BitConstants(1, Num32BitPerMatrix, &ObjectMatrix, 0);
-
-	CommandList->DrawIndexedInstanced(IndexCount, 1, 0, 0, 0);
+		CommandList->SetGraphicsRoot32BitConstants(1, Num32BitPerMatrix, &ObjectMatrix, 0);
+		CommandList->DrawIndexedInstanced(IndexCount, 1, 0, 0, 0);
+	}
 }
 
 void Model::CreateRootSignature()
@@ -165,7 +165,7 @@ void Model::UploadIndices(_In_ Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList>
 	};
 
 	constexpr size_t SizeOfIndices = Indices.size() * sizeof(IndexSize);
-	IndexCount = Indices.size();
+	IndexCount = static_cast<UINT>(Indices.size());
 
 	UploadData(CommandList, IndexBuffer, UploadResource, Indices.data(), SizeOfIndices);
 

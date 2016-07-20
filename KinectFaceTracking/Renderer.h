@@ -5,6 +5,8 @@
 #include "DirectionalFoVCamera.h"
 #include "Window.h"
 
+#include "Transform.h"
+
 class GraphicsContext;
 class Model;
 
@@ -15,7 +17,9 @@ public:
 
 	void Initialize();
 
-	void Render(_In_ Model Cube);
+	typedef std::pair<Model &, const TransformList &> RenderParameter;
+	typedef std::vector<RenderParameter> RenderParameterList;
+	void Render(_In_ RenderParameterList Cubes);
 
 	void OnWindowSizeChange(_In_ const Window::WindowSize & NewSize);
 

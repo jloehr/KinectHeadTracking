@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Transform.h"
+
 class GraphicsContext;
 class Camera;
 
@@ -9,7 +11,7 @@ public:
 	Model(_In_ GraphicsContext & DeviceContext);
 
 	void Create();
-	void Render(_In_ Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> & CommandList, _In_ Camera & Camera);
+	void Render(_In_ Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> & CommandList, _In_ Camera & Camera, _In_ const TransformList & Objects);
 
 private:
 	struct Vertex

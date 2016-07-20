@@ -6,8 +6,20 @@
 
 KinectFaceTracking::KinectFaceTracking(_In_ HINSTANCE Instance)
 	:Instance(Instance), Window(Renderer), Renderer(GraphicsDevice, Window)
-	,Cube(GraphicsDevice)
+	,CubeModel(GraphicsDevice)
 {
+	Cubes = { 
+		Transform(Vector3(-5.0f,-5.0f, -0.5f), Quaternion(),                   Vector3(0.5f)),
+		Transform(Vector3(-5.0f, 5.0f, -0.5f), Quaternion( 90.f,   0.f,  0.f), Vector3(0.5f)),
+		Transform(Vector3( 5.0f,-5.0f, -0.5f), Quaternion( 90.f,  90.f,  0.f), Vector3(0.5f)),
+		Transform(Vector3( 5.0f, 5.0f, -0.5f), Quaternion(180.f,  90.f,  0.f), Vector3(0.5f)),
+		Transform(Vector3(-5.0f,-5.0f,-10.0f), Quaternion(  0.f,   0.f,  0.f), Vector3(0.5f)),
+		Transform(Vector3(-5.0f, 5.0f,-10.0f), Quaternion( 90.f,   0.f,  0.f), Vector3(0.5f)),
+		Transform(Vector3( 5.0f,-5.0f,-10.0f), Quaternion(  0.f,  90.f,  0.f), Vector3(0.5f)),
+		Transform(Vector3( 5.0f, 5.0f,-10.0f), Quaternion(180.f,  90.f,  0.f), Vector3(0.5f)),
+		Transform(Vector3( 1.0f, 0.0f, -2.0f), Quaternion(  0.f,   0.f,  0.f)),
+		Transform(Vector3(-1.0f, 0.0f, -2.0f), Quaternion(  0.f, -45.f,  0.f), Vector3(1.5f))
+	};
 }
 
 int KinectFaceTracking::Run(_In_ int CmdShow)
@@ -23,9 +35,7 @@ int KinectFaceTracking::Run(_In_ int CmdShow)
 			DispatchMessage(&Message);
 		}
 
-		// Update
-		// Render
-		Renderer.Render(Cube);
+		Renderer.Render({ Renderer::RenderParameter(CubeModel, Cubes) });
 
 	} while (Message.message != WM_QUIT);
 
@@ -43,7 +53,7 @@ void KinectFaceTracking::Initialize(_In_ int CmdShow)
 
 	Window.Show(CmdShow);
 
-	Cube.Create();
+	CubeModel.Create();
 }
 
 void KinectFaceTracking::Destroy()

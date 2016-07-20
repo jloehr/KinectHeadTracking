@@ -172,7 +172,7 @@ CD3DX12_CPU_DESCRIPTOR_HANDLE Renderer::GetRTVCPUHandle()
 	return CD3DX12_CPU_DESCRIPTOR_HANDLE(RTVHeap->GetCPUDescriptorHandleForHeapStart(), BufferFrameIndex, RTVDescSize);
 }
 
-void Renderer::Render(_In_ Model Cube)
+void Renderer::Render(_In_ RenderParameterList ObjectsToRender)
 {
 	RenderTarget & CurrentRenderTarget = RenderTargets[BufferFrameIndex];
 	CurrentRenderTarget.BeginFrame(CommandList);
@@ -187,8 +187,10 @@ void Renderer::Render(_In_ Model Cube)
 	CommandList->RSSetViewports(1, &Viewport);
 	CommandList->RSSetScissorRects(1, &ScissorRect);
 
-	// Render Objects
-	Cube.Render(CommandList, Camera);
+	for (RenderParameter & Model : ObjectsToRender)
+	{
+		Model.first.Render(CommandList, Camera, Model.second);
+	}
 
 	CurrentRenderTarget.EndFrame(CommandList, DeviceContext.GetCommandQueue());
 	Utility::ThrowOnFail(SwapChain->Present(0, 0));
