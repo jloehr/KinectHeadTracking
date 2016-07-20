@@ -30,5 +30,5 @@ private:
 	TransformList Cubes;
 
 	void Initialize(_In_ int CmdShow);
-	void Destroy();
+	void Release();
 };

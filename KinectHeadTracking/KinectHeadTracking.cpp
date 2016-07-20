@@ -41,7 +41,7 @@ int KinectHeadTracking::Run(_In_ int CmdShow)
 
 	} while (Message.message != WM_QUIT);
 
-	Destroy();
+	Release();
 
 	return static_cast<int>(Message.wParam);
 }
@@ -58,7 +58,7 @@ void KinectHeadTracking::Initialize(_In_ int CmdShow)
 	CubeModel.Create();
 }
 
-void KinectHeadTracking::Destroy()
+void KinectHeadTracking::Release()
 {
 	GraphicsDevice.Release();
 }
