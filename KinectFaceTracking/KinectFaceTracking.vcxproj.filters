@@ -74,6 +74,9 @@
     <ClInclude Include="DirectionalFoVCamera.h">
       <Filter>Header Files\Graphics\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="FrameCamera.h">
+      <Filter>Header Files\Graphics\Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -116,6 +119,9 @@
       <Filter>Source Files\Graphics\Camera</Filter>
     </ClCompile>
     <ClCompile Include="DirectionalFoVCamera.cpp">
+      <Filter>Source Files\Graphics\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameCamera.cpp">
       <Filter>Source Files\Graphics\Camera</Filter>
     </ClCompile>
   </ItemGroup>

@@ -8,7 +8,14 @@ namespace Utility
 }
 
 struct Vector3 {
-	DirectX::XMVECTOR Vector;
+	union {
+		struct {
+			float X;
+			float Y;
+			float Z;
+		};
+		DirectX::XMVECTORF32 Vector;
+	};
 
 	Vector3()
 		:Vector3(0.0f) {}
@@ -17,10 +24,13 @@ struct Vector3 {
 		:Vector3(Value, Value, Value) {}
 
 	Vector3(_In_ float X, _In_ float Y, _In_ float Z)
-		:Vector(DirectX::XMVectorSet(X, Y, Z, 0.0f)) {}
+		:Vector({ X, Y, Z, 0.0f }) {}
+
+	Vector3(_In_ const DirectX::XMVECTORF32 & Vector)
+		:Vector(Vector) {}
 
 	Vector3(_In_ const DirectX::XMVECTOR & Vector)
-		:Vector(Vector) {}
+	{ this->Vector.v = Vector; }
 
 	inline operator DirectX::XMVECTOR() const { return Vector; }
 };

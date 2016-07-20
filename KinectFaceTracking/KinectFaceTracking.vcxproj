@@ -149,6 +149,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="d3dx12.h" />
     <ClInclude Include="DirectionalFoVCamera.h" />
+    <ClInclude Include="FrameCamera.h" />
     <ClInclude Include="GPUFence.h" />
     <ClInclude Include="GraphicsContext.h" />
     <ClInclude Include="KinectFaceTracking.h" />
@@ -166,6 +167,7 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DirectionalFoVCamera.cpp" />
+    <ClCompile Include="FrameCamera.cpp" />
     <ClCompile Include="GPUFence.cpp" />
     <ClCompile Include="GraphicsContext.cpp" />
     <ClCompile Include="KinectFaceTracking.cpp" />

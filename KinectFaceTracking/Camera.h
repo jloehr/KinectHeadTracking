@@ -7,7 +7,9 @@ class Camera
 public:
 	Camera(_In_ const Vector3 & Position);
 
-	 virtual void UpdateCamera(_In_ const Window::WindowSize & Size) = 0;
+	virtual void UpdateCamera(_In_ const Window::WindowSize & Size);
+	virtual void UpdateCamera(_In_ const Vector3 & Position);
+	virtual void UpdateCamera() = 0;
 
 	const DirectX::XMFLOAT4X4 & GetViewMatrix() const;
 	const DirectX::XMFLOAT4X4 & GetProjectionMatrix() const;
@@ -19,5 +21,6 @@ protected:
 	DirectX::XMFLOAT4X4 Projection;
 
 	Vector3 Position;
+	float AspectRatio;
 };
 

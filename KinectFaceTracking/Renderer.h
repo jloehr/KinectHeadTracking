@@ -3,6 +3,7 @@
 #include "RenderTarget.h"
 #include "GPUFence.h"
 #include "DirectionalFoVCamera.h"
+#include "FrameCamera.h"
 #include "Window.h"
 
 #include "Transform.h"
@@ -38,7 +39,9 @@ protected:
 	Microsoft::WRL::ComPtr<ID3D12Resource> DepthStencelView;
 	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> CommandList;
 
-	DirectionalFoVCamera Camera;
+	DirectionalFoVCamera DCamera;
+	FrameCamera FCamera;
+	Camera & Camera;
 	D3D12_VIEWPORT Viewport;
 	D3D12_RECT ScissorRect;
 
