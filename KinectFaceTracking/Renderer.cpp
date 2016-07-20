@@ -180,7 +180,7 @@ void Renderer::Render(_In_ Model Cube)
 	CD3DX12_CPU_DESCRIPTOR_HANDLE DSVHandle(DSVHeap->GetCPUDescriptorHandleForHeapStart());
 
 	CommandList->OMSetRenderTargets(1, &RTVHandle, FALSE, &DSVHandle);
-	CommandList->ClearRenderTargetView(GetRTVCPUHandle(), BackgroundColor.data(), 0, nullptr);
+	CommandList->ClearRenderTargetView(RTVHandle, BackgroundColor.data(), 0, nullptr);
 	CommandList->ClearDepthStencilView(DSVHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
 	CommandList->RSSetViewports(1, &Viewport);
