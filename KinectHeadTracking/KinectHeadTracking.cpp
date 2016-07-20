@@ -1,12 +1,14 @@
-// KinectFaceTracking.cpp : Defines the application class.
+// KinectHeadTracking.cpp : Defines the application class.
 //
 
 #include "stdafx.h"
-#include "KinectFaceTracking.h"
+#include "KinectHeadTracking.h"
 
-KinectFaceTracking::KinectFaceTracking(_In_ HINSTANCE Instance)
-	:Instance(Instance), Window(Renderer), Renderer(GraphicsDevice, Window)
+KinectHeadTracking::KinectHeadTracking(_In_ HINSTANCE Instance)
+	:Instance(Instance), Window(Renderer), Renderer(GraphicsDevice, Window, FCamera)
 	,CubeModel(GraphicsDevice)
+	,DCamera(Vector3(0.0f, 0.0f, 5.0f))
+	,FCamera(Vector3(0.0f, 0.0f, 5.0f), 10.0f)
 {
 	Cubes = { 
 		Transform(Vector3(-5.0f,-5.0f, -0.5f), Quaternion(),                   Vector3(0.5f)),
@@ -22,7 +24,7 @@ KinectFaceTracking::KinectFaceTracking(_In_ HINSTANCE Instance)
 	};
 }
 
-int KinectFaceTracking::Run(_In_ int CmdShow)
+int KinectHeadTracking::Run(_In_ int CmdShow)
 {
 	Initialize(CmdShow);
 
@@ -44,7 +46,7 @@ int KinectFaceTracking::Run(_In_ int CmdShow)
 	return static_cast<int>(Message.wParam);
 }
 
-void KinectFaceTracking::Initialize(_In_ int CmdShow)
+void KinectHeadTracking::Initialize(_In_ int CmdShow)
 {
 	GraphicsDevice.Initialize();
 
@@ -56,7 +58,7 @@ void KinectFaceTracking::Initialize(_In_ int CmdShow)
 	CubeModel.Create();
 }
 
-void KinectFaceTracking::Destroy()
+void KinectHeadTracking::Destroy()
 {
 	GraphicsDevice.Release();
 }

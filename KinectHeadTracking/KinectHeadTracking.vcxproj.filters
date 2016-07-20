@@ -44,9 +44,6 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="KinectFaceTracking.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Renderer.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
@@ -89,12 +86,12 @@
     <ClInclude Include="Transform.h">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="KinectHeadTracking.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="KinectFaceTracking.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Main.cpp">
@@ -136,15 +133,18 @@
     <ClCompile Include="Utility.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="KinectFaceTracking.rc">
-      <Filter>Resources</Filter>
-    </ResourceCompile>
+    <ClCompile Include="KinectHeadTracking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Shader.hlsl">
       <Filter>Resources</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="KinectHeadTracking.rc">
+      <Filter>Resources</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

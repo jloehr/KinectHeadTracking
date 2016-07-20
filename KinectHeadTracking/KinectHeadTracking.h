@@ -6,10 +6,13 @@
 #include "Model.h"
 #include "Transform.h"
 
-class KinectFaceTracking
+#include "DirectionalFoVCamera.h"
+#include "FrameCamera.h"
+
+class KinectHeadTracking
 {
 public:
-	KinectFaceTracking(_In_ HINSTANCE Instance);
+	KinectHeadTracking(_In_ HINSTANCE Instance);
 
 	int Run(_In_ int nCmdShow);
 
@@ -19,6 +22,9 @@ private:
 	MainWindow Window;
 	GraphicsContext GraphicsDevice;
 	Renderer Renderer;
+
+	DirectionalFoVCamera DCamera;
+	FrameCamera FCamera;
 
 	Model CubeModel;
 	TransformList Cubes;

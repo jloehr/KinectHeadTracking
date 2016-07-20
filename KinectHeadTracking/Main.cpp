@@ -2,7 +2,7 @@
 //
 
 #include "stdafx.h"
-#include "KinectFaceTracking.h"
+#include "KinectHeadTracking.h"
 
 int WINAPI wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -12,7 +12,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
-	KinectFaceTracking App(hInstance);
+	KinectHeadTracking App(hInstance);
 
 	return App.Run(nCmdShow);
 }

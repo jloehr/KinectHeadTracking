@@ -5,15 +5,12 @@
 #include "Renderer.h"
 
 #include "GraphicsContext.h"
-#include "Window.h"
-
+#include "Camera.h"
 #include "Model.h"
 
-Renderer::Renderer(_In_ GraphicsContext & DeviceContext, _In_ Window & TargetWindow)
+Renderer::Renderer(_In_ GraphicsContext & DeviceContext, _In_ Window & TargetWindow, _In_ ::Camera & Camera)
 	:DeviceContext(DeviceContext), TargetWindow(TargetWindow)
-	,DCamera(Vector3(0.0f, 0.0f, 5.0f))
-	,FCamera(Vector3(0.0f, 0.0f, 5.0f), 10.0f)
-	,Camera(FCamera)
+	,Camera(Camera)
 	,Viewport(), ScissorRect()
 	,RTVDescSize(0), BufferFrameIndex(0)
 {

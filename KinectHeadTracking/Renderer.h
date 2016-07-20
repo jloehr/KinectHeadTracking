@@ -2,19 +2,18 @@
 
 #include "RenderTarget.h"
 #include "GPUFence.h"
-#include "DirectionalFoVCamera.h"
-#include "FrameCamera.h"
 #include "Window.h"
 
 #include "Transform.h"
 
 class GraphicsContext;
+class Camera;
 class Model;
 
 class Renderer
 {
 public:
-	Renderer(_In_ GraphicsContext & DeviceContext, _In_ Window & TargetWindow);
+	Renderer(_In_ GraphicsContext & DeviceContext, _In_ Window & TargetWindow, _In_ Camera & Camera);
 
 	void Initialize();
 
@@ -39,8 +38,6 @@ protected:
 	Microsoft::WRL::ComPtr<ID3D12Resource> DepthStencelView;
 	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> CommandList;
 
-	DirectionalFoVCamera DCamera;
-	FrameCamera FCamera;
 	Camera & Camera;
 	D3D12_VIEWPORT Viewport;
 	D3D12_RECT ScissorRect;
