@@ -11,6 +11,7 @@
 
 Renderer::Renderer(_In_ GraphicsContext & DeviceContext, _In_ Window & TargetWindow)
 	:DeviceContext(DeviceContext), TargetWindow(TargetWindow)
+	,Camera(Vector3(0.0f, 0.0f, 5.0f))
 	,Viewport(), ScissorRect()
 	,RTVDescSize(0), BufferFrameIndex(0)
 {

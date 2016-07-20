@@ -2,7 +2,7 @@
 
 #include "RenderTarget.h"
 #include "GPUFence.h"
-#include "Camera.h"
+#include "DirectionalFoVCamera.h"
 #include "Window.h"
 
 class GraphicsContext;
@@ -34,7 +34,7 @@ protected:
 	Microsoft::WRL::ComPtr<ID3D12Resource> DepthStencelView;
 	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> CommandList;
 
-	Camera Camera;
+	DirectionalFoVCamera Camera;
 	D3D12_VIEWPORT Viewport;
 	D3D12_RECT ScissorRect;
 

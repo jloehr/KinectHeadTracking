@@ -18,6 +18,12 @@
     <Filter Include="Resources">
       <UniqueIdentifier>{86bb6169-7e86-4432-8c51-cdd0b2c6acdf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Graphics\Camera">
+      <UniqueIdentifier>{63f32fb5-1fa2-4dd7-9959-60bbe9028248}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics\Camera">
+      <UniqueIdentifier>{26f66611-4f03-4c4b-be3b-5f61215b7e9c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -63,7 +69,10 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
-      <Filter>Header Files\Graphics</Filter>
+      <Filter>Header Files\Graphics\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectionalFoVCamera.h">
+      <Filter>Header Files\Graphics\Camera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -104,7 +113,10 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
-      <Filter>Source Files\Graphics</Filter>
+      <Filter>Source Files\Graphics\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectionalFoVCamera.cpp">
+      <Filter>Source Files\Graphics\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
