@@ -36,6 +36,12 @@
     <Filter Include="Source Files\Utility">
       <UniqueIdentifier>{73f63f42-d752-451a-8c13-3e9326e387fa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Kinect">
+      <UniqueIdentifier>{4f93e5b4-1cbd-4809-8e54-39c23fd87626}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Kinect">
+      <UniqueIdentifier>{740f0750-e4fa-4152-b0a1-1fd7de8017de}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -89,6 +95,9 @@
     <ClInclude Include="KinectHeadTracking.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="HeadTracker.h">
+      <Filter>Header Files\Kinect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -135,6 +144,9 @@
     </ClCompile>
     <ClCompile Include="KinectHeadTracking.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HeadTracker.cpp">
+      <Filter>Source Files\Kinect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

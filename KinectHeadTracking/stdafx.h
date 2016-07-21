@@ -18,7 +18,11 @@
 #include <DirectXMath.h>
 #include "d3dx12.h"
 
+#include <Kinect.h>
+#include <Kinect.Face.h>
+
 #include <string>
+#include <sstream>
 #include <array>
 #include <vector>
 

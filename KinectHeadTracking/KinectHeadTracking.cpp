@@ -5,7 +5,7 @@
 #include "KinectHeadTracking.h"
 
 KinectHeadTracking::KinectHeadTracking(_In_ HINSTANCE Instance)
-	:Instance(Instance), Window(Renderer), Renderer(GraphicsDevice, Window, FCamera)
+	:Instance(Instance), Window(Renderer), Renderer(GraphicsDevice, Window, FCamera), HeadTracker(FCamera)
 	,CubeModel(GraphicsDevice)
 	,DCamera(Vector3(0.0f, 0.0f, 5.0f))
 	,FCamera(Vector3(0.0f, 0.0f, 5.0f), 10.0f)
@@ -37,6 +37,7 @@ int KinectHeadTracking::Run(_In_ int CmdShow)
 			DispatchMessage(&Message);
 		}
 
+		HeadTracker.Update();
 		Renderer.Render({ Renderer::RenderParameter(CubeModel, Cubes) });
 
 	} while (Message.message != WM_QUIT);
@@ -48,17 +49,19 @@ int KinectHeadTracking::Run(_In_ int CmdShow)
 
 void KinectHeadTracking::Initialize(_In_ int CmdShow)
 {
-	GraphicsDevice.Initialize();
-
 	Window.Create(Instance);
+
+	GraphicsDevice.Initialize();
 	Renderer.Initialize();
+	CubeModel.Create();
+
+	HeadTracker.Initialize();
 
 	Window.Show(CmdShow);
-
-	CubeModel.Create();
 }
 
 void KinectHeadTracking::Release()
 {
-	GraphicsDevice.Release();
+	GraphicsDevice.Release(); 
+	HeadTracker.Release();
 }

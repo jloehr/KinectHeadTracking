@@ -3,11 +3,13 @@
 #include "MainWindow.h"
 #include "GraphicsContext.h"
 #include "Renderer.h"
-#include "Model.h"
-#include "Transform.h"
+#include "HeadTracker.h"
 
 #include "DirectionalFoVCamera.h"
 #include "FrameCamera.h"
+
+#include "Model.h"
+#include "Transform.h"
 
 class KinectHeadTracking
 {
@@ -22,6 +24,7 @@ private:
 	MainWindow Window;
 	GraphicsContext GraphicsDevice;
 	Renderer Renderer;
+	HeadTracker HeadTracker;
 
 	DirectionalFoVCamera DCamera;
 	FrameCamera FCamera;
