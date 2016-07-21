@@ -5,7 +5,7 @@ class Camera;
 class HeadTracker
 {
 public:
-	HeadTracker(Camera & Camera);
+	HeadTracker(Camera & Camera, const Vector3 & Offset, float RealWorldToVirutalScale);
 
 	void Initialize();
 	void Release();
@@ -20,6 +20,8 @@ private:
 	typedef std::vector<CameraSpacePoint> CameraSpacePointList;
 
 	Camera & BoundCamera;
+	Vector3 Offset;
+	float RealWorldToVirutalScale;
 
 	Microsoft::WRL::ComPtr<IKinectSensor> KinectSensor; 
 	Microsoft::WRL::ComPtr<IBodyFrameSource> BodyFrameSource;

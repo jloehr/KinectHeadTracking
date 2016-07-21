@@ -5,7 +5,7 @@
 #include "KinectHeadTracking.h"
 
 KinectHeadTracking::KinectHeadTracking(_In_ HINSTANCE Instance)
-	:Instance(Instance), Window(Renderer), Renderer(GraphicsDevice, Window, FCamera), HeadTracker(FCamera)
+	:Instance(Instance), Window(Renderer), Renderer(GraphicsDevice, Window, FCamera), HeadTracker(FCamera, Vector3(0.f, -0.2f, 0.f), 10.f / 0.3f)
 	,CubeModel(GraphicsDevice)
 	,DCamera(Vector3(0.0f, 0.0f, 5.0f))
 	,FCamera(Vector3(0.0f, 0.0f, 5.0f), 10.0f)
@@ -19,8 +19,8 @@ KinectHeadTracking::KinectHeadTracking(_In_ HINSTANCE Instance)
 		Transform(Vector3(-5.0f, 5.0f,-10.0f), Quaternion( 90.f,   0.f,  0.f), Vector3(0.5f)),
 		Transform(Vector3( 5.0f,-5.0f,-10.0f), Quaternion(  0.f,  90.f,  0.f), Vector3(0.5f)),
 		Transform(Vector3( 5.0f, 5.0f,-10.0f), Quaternion(180.f,  90.f,  0.f), Vector3(0.5f)),
-		Transform(Vector3( 1.0f, 0.0f, -2.0f), Quaternion(  0.f,   0.f,  0.f)),
-		Transform(Vector3(-1.0f, 0.0f, -2.0f), Quaternion(  0.f, -45.f,  0.f), Vector3(1.5f))
+		Transform(Vector3( 1.5f, 0.0f, -5.0f), Quaternion(  0.f,   0.f,  0.f), Vector3(1.0f)),
+		Transform(Vector3(-1.5f, 0.0f, -5.0f), Quaternion(  0.f, -45.f,  0.f), Vector3(2.0f))
 	};
 }
 
