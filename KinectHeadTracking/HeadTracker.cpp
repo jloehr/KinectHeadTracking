@@ -6,10 +6,10 @@
 
 #include "Camera.h"
 
-HeadTracker::HeadTracker(Camera & Camera, const Vector3 & Offset, float RealWorldToVirutalScale)
+HeadTracker::HeadTracker(Camera & Camera, const Vector3 & Offset)
 	:BoundCamera(Camera)
 	,Offset(Offset)
-	,RealWorldToVirutalScale(RealWorldToVirutalScale)
+	,RealWorldToVirutalScale(100.f) // Kinect Sensor reports its values in "Meters"; Virtual World uses "Centimeters"
 {
 }
 
@@ -128,7 +128,7 @@ void HeadTracker::HighDefinitionFaceFrameRecieved(WAITABLE_HANDLE EventHandle)
 	Utility::ThrowOnFail(FaceModel->CalculateVerticesForAlignment(FaceAlignment.Get(), static_cast<UINT>(FaceVertices.size()), FaceVertices.data()));
 
 	CameraSpacePoint & NoseTop = FaceVertices[HighDetailFacePoints_NoseTop];
-	BoundCamera.UpdateCamera(Vector3((NoseTop.X + Offset.X) * RealWorldToVirutalScale, (NoseTop.Y + Offset.Y) * RealWorldToVirutalScale, (NoseTop.Z + Offset.Z) * RealWorldToVirutalScale));
+	BoundCamera.UpdateCamera(Vector3((NoseTop.X * RealWorldToVirutalScale) + Offset.X, (NoseTop.Y * RealWorldToVirutalScale) + Offset.Y, (NoseTop.Z * RealWorldToVirutalScale) + Offset.Z));
 }
 
 Microsoft::WRL::ComPtr<IBodyFrame> HeadTracker::GetBodyFrame(WAITABLE_HANDLE EventHandle)

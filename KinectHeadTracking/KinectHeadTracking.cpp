@@ -7,22 +7,29 @@
 #include "SettingsFile.h"
 
 KinectHeadTracking::KinectHeadTracking(_In_ HINSTANCE Instance)
-	:Instance(Instance), Window(Renderer), Renderer(GraphicsDevice, Window, FCamera), HeadTracker(FCamera, SettingsFile::Kinect::GetKinectOffset(), 10.f / 0.3f)
+	:Instance(Instance), Window(Renderer), Renderer(GraphicsDevice, Window, FCamera), HeadTracker(FCamera, SettingsFile::Kinect::GetKinectOffset())
 	,CubeModel(GraphicsDevice)
-	,DCamera(Vector3(0.0f, 0.0f, 5.0f))
-	,FCamera(Vector3(0.0f, 0.0f, 5.0f), SettingsFile::Monitor::GetMonitorHeight())
+	,DCamera(Vector3(0.0f, 0.0f, 50.0f))
+	,FCamera(Vector3(0.0f, 0.0f, 50.0f), SettingsFile::Monitor::GetMonitorHeight())
 {
+	float MonitorHeight = SettingsFile::Monitor::GetMonitorHeight();
+	float MonitorHalfHeight = MonitorHeight / 2.f;
+
 	Cubes = { 
-		Transform(Vector3(-5.0f,-5.0f, -0.5f), Quaternion(),                   Vector3(0.5f)),
-		Transform(Vector3(-5.0f, 5.0f, -0.5f), Quaternion( 90.f,   0.f,  0.f), Vector3(0.5f)),
-		Transform(Vector3( 5.0f,-5.0f, -0.5f), Quaternion( 90.f,  90.f,  0.f), Vector3(0.5f)),
-		Transform(Vector3( 5.0f, 5.0f, -0.5f), Quaternion(180.f,  90.f,  0.f), Vector3(0.5f)),
-		Transform(Vector3(-5.0f,-5.0f,-10.0f), Quaternion(  0.f,   0.f,  0.f), Vector3(0.5f)),
-		Transform(Vector3(-5.0f, 5.0f,-10.0f), Quaternion( 90.f,   0.f,  0.f), Vector3(0.5f)),
-		Transform(Vector3( 5.0f,-5.0f,-10.0f), Quaternion(  0.f,  90.f,  0.f), Vector3(0.5f)),
-		Transform(Vector3( 5.0f, 5.0f,-10.0f), Quaternion(180.f,  90.f,  0.f), Vector3(0.5f)),
-		Transform(Vector3( 1.5f, 0.0f, -5.0f), Quaternion(  0.f,   0.f,  0.f), Vector3(1.0f)),
-		Transform(Vector3(-1.5f, 0.0f, -5.0f), Quaternion(  0.f, -45.f,  0.f), Vector3(2.0f))
+		Transform(Vector3(-MonitorHalfHeight,-MonitorHalfHeight, -1.5f),		 Quaternion(),                   Vector3(2.f)),
+		Transform(Vector3(-MonitorHalfHeight, MonitorHalfHeight, -1.5f),		 Quaternion( 90.f,   0.f,  0.f), Vector3(2.f)),
+		Transform(Vector3( MonitorHalfHeight,-MonitorHalfHeight, -1.5f),		 Quaternion( 90.f,  90.f,  0.f), Vector3(2.f)),
+		Transform(Vector3( MonitorHalfHeight, MonitorHalfHeight, -1.5f),		 Quaternion(180.f,  90.f,  0.f), Vector3(2.f)),
+		Transform(Vector3(-MonitorHalfHeight,-MonitorHalfHeight,-MonitorHeight), Quaternion(  0.f,   0.f,  0.f), Vector3(2.f)),
+		Transform(Vector3(-MonitorHalfHeight, MonitorHalfHeight,-MonitorHeight), Quaternion(  0.f,   0.f,  0.f), Vector3(2.f)),
+		Transform(Vector3( MonitorHalfHeight,-MonitorHalfHeight,-MonitorHeight), Quaternion(  0.f,  90.f,  0.f), Vector3(2.f)),
+		Transform(Vector3( MonitorHalfHeight, MonitorHalfHeight,-MonitorHeight), Quaternion(180.f,  90.f,  0.f), Vector3(2.f)),
+		Transform(Vector3(-MonitorHalfHeight,-MonitorHalfHeight,-MonitorHalfHeight), Quaternion(), Vector3(1.0f, 1.0f, MonitorHeight - 2.0f)),
+		Transform(Vector3(-MonitorHalfHeight, MonitorHalfHeight,-MonitorHalfHeight), Quaternion(), Vector3(1.0f, 1.0f, MonitorHeight - 2.0f)),
+		Transform(Vector3( MonitorHalfHeight,-MonitorHalfHeight,-MonitorHalfHeight), Quaternion(), Vector3(1.0f, 1.0f, MonitorHeight - 2.0f)),
+		Transform(Vector3( MonitorHalfHeight, MonitorHalfHeight,-MonitorHalfHeight), Quaternion(), Vector3(1.0f, 1.0f, MonitorHeight - 2.0f)),
+		Transform(Vector3( 5.f, 0.0f, -10.0f), Quaternion(  0.f,   0.f,  0.f), Vector3(2.5f)),
+		Transform(Vector3(-5.f, 0.0f, -10.0f), Quaternion(  0.f, -45.f,  0.f), Vector3(5.0f))
 	};
 }
 

@@ -5,7 +5,7 @@ class Camera;
 class HeadTracker
 {
 public:
-	HeadTracker(Camera & Camera, const Vector3 & Offset, float RealWorldToVirutalScale);
+	HeadTracker(Camera & Camera, const Vector3 & Offset);
 
 	void Initialize();
 	void Release();
