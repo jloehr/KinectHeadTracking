@@ -42,6 +42,9 @@
     <Filter Include="Source Files\Kinect">
       <UniqueIdentifier>{740f0750-e4fa-4152-b0a1-1fd7de8017de}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Additional Files">
+      <UniqueIdentifier>{82d4925b-b1cb-491a-97c5-d367688fcb6b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -98,6 +101,9 @@
     <ClInclude Include="HeadTracker.h">
       <Filter>Header Files\Kinect</Filter>
     </ClInclude>
+    <ClInclude Include="SettingsFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -148,6 +154,9 @@
     <ClCompile Include="HeadTracker.cpp">
       <Filter>Source Files\Kinect</Filter>
     </ClCompile>
+    <ClCompile Include="SettingsFile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Shader.hlsl">
@@ -158,5 +167,10 @@
     <ResourceCompile Include="KinectHeadTracking.rc">
       <Filter>Resources</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Settings.ini">
+      <Filter>Additional Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

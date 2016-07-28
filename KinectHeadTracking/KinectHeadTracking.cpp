@@ -4,11 +4,13 @@
 #include "stdafx.h"
 #include "KinectHeadTracking.h"
 
+#include "SettingsFile.h"
+
 KinectHeadTracking::KinectHeadTracking(_In_ HINSTANCE Instance)
-	:Instance(Instance), Window(Renderer), Renderer(GraphicsDevice, Window, FCamera), HeadTracker(FCamera, Vector3(0.f, -0.2f, 0.f), 10.f / 0.3f)
+	:Instance(Instance), Window(Renderer), Renderer(GraphicsDevice, Window, FCamera), HeadTracker(FCamera, SettingsFile::Kinect::GetKinectOffset(), 10.f / 0.3f)
 	,CubeModel(GraphicsDevice)
 	,DCamera(Vector3(0.0f, 0.0f, 5.0f))
-	,FCamera(Vector3(0.0f, 0.0f, 5.0f), 10.0f)
+	,FCamera(Vector3(0.0f, 0.0f, 5.0f), SettingsFile::Monitor::GetMonitorHeight())
 {
 	Cubes = { 
 		Transform(Vector3(-5.0f,-5.0f, -0.5f), Quaternion(),                   Vector3(0.5f)),

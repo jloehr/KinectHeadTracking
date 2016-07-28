@@ -105,7 +105,8 @@
     </Link>
     <PostBuildEvent>
       <Command>xcopy "$(KINECTSDK20_DIR)Redist\Face\x86\NuiDatabase" "$(TargetDir)NuiDatabase" /e /y /i /r /d
-xcopy "$(KINECTSDK20_DIR)Redist\Face\x86\Kinect20.Face.dll" "$(TargetDir)" /c /y /d</Command>
+xcopy "$(KINECTSDK20_DIR)Redist\Face\x86\Kinect20.Face.dll" "$(TargetDir)" /c /y /d
+xcopy "$(ProjectDir)Settings.ini" "$(TargetDir)" /c /y /d</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -123,7 +124,8 @@ xcopy "$(KINECTSDK20_DIR)Redist\Face\x86\Kinect20.Face.dll" "$(TargetDir)" /c /y
     </Link>
     <PostBuildEvent>
       <Command>xcopy "$(KINECTSDK20_DIR)Redist\Face\x64\NuiDatabase" "$(TargetDir)NuiDatabase" /e /y /i /r /d
-xcopy "$(KINECTSDK20_DIR)Redist\Face\x64\Kinect20.Face.dll" "$(TargetDir)" /c /y /d</Command>
+xcopy "$(KINECTSDK20_DIR)Redist\Face\x64\Kinect20.Face.dll" "$(TargetDir)" /c /y /d
+xcopy "$(ProjectDir)Settings.ini" "$(TargetDir)" /c /y /d</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -145,7 +147,8 @@ xcopy "$(KINECTSDK20_DIR)Redist\Face\x64\Kinect20.Face.dll" "$(TargetDir)" /c /y
     </Link>
     <PostBuildEvent>
       <Command>xcopy "$(KINECTSDK20_DIR)Redist\Face\x86\NuiDatabase" "$(TargetDir)NuiDatabase" /e /y /i /r /d
-xcopy "$(KINECTSDK20_DIR)Redist\Face\x86\Kinect20.Face.dll" "$(TargetDir)" /c /y /d</Command>
+xcopy "$(KINECTSDK20_DIR)Redist\Face\x86\Kinect20.Face.dll" "$(TargetDir)" /c /y /d
+xcopy "$(ProjectDir)Settings.ini" "$(TargetDir)" /c /y /d</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -167,7 +170,8 @@ xcopy "$(KINECTSDK20_DIR)Redist\Face\x86\Kinect20.Face.dll" "$(TargetDir)" /c /y
     </Link>
     <PostBuildEvent>
       <Command>xcopy "$(KINECTSDK20_DIR)Redist\Face\x64\NuiDatabase" "$(TargetDir)NuiDatabase" /e /y /i /r /d
-xcopy "$(KINECTSDK20_DIR)Redist\Face\x64\Kinect20.Face.dll" "$(TargetDir)" /c /y /d</Command>
+xcopy "$(KINECTSDK20_DIR)Redist\Face\x64\Kinect20.Face.dll" "$(TargetDir)" /c /y /d
+xcopy "$(ProjectDir)Settings.ini" "$(TargetDir)" /c /y /d</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -184,6 +188,7 @@ xcopy "$(KINECTSDK20_DIR)Redist\Face\x64\Kinect20.Face.dll" "$(TargetDir)" /c /y
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="RenderTarget.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="SettingsFile.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Transform.h" />
@@ -203,6 +208,7 @@ xcopy "$(KINECTSDK20_DIR)Redist\Face\x64\Kinect20.Face.dll" "$(TargetDir)" /c /y
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="RenderTarget.cpp" />
+    <ClCompile Include="SettingsFile.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -222,6 +228,19 @@ xcopy "$(KINECTSDK20_DIR)Redist\Face\x64\Kinect20.Face.dll" "$(TargetDir)" /c /y
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="KinectHeadTracking.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Settings.ini">
+      <FileType>Text</FileType>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </DeploymentContent>
+    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
